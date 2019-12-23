@@ -1,0 +1,16 @@
+productView:
+  path: /product/view/{productId}
+  controller: App\Controller\ProductController::viewAction
+categoryView:
+  path: /category/view/{categoryId}
+  controller: App\Controller\CategoryController::viewAction
+test:
+  path: /test
+  controller: App\Controller\TestController::testAction
+
+index:
+  path: /
+  controller: App\Controller\HomeController::indexAction
+#test2:
+#  path: /test/{slug}
+#  controller: App\Controller\TestController::testAction

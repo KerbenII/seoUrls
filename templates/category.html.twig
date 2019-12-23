@@ -1,0 +1,16 @@
+{% extends "base.html.twig" %}
+{% block title %}
+    {{ category.name|upper }}
+{% endblock %}
+
+{% block body %}
+<h2>{{ category.name}}</h2>
+    {% for product in products %}
+        <ul>
+            <li>{{ product.name }}</li>
+            <li>{{ product.price }}</li>
+            <li><a href="{{ url('productView', {'productId' : product.id}) }}">Frameworkowy URL</a></li>
+            <li><a href="{{ url('productUrl', {'productId' : product.id }) }}"> Friendly URL</a></li>
+        </ul>
+    {% endfor %}
+{% endblock %}

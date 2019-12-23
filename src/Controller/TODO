@@ -1,0 +1,9 @@
+Wymagane:
+TODO: Przy zapisie seoUrl pobieramy na podstawie  url kontroler
+TODO: Przy zapisie seoUrl potwierdzamy, że kontroler istnieje
+   $router = $this->container->get('router');
+   /** @var Route $route */
+   $route = $router->getRouteCollection()->get('/czarne-sniegowce-kenthurst');
+   $controllerAction = $route->getDefaults();
+   dump($controllerAction);
+TODO: statusCode jako enum :P   

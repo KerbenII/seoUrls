@@ -1,0 +1,15 @@
+{% extends "base.html.twig" %}
+{% block title %}
+    Sklep demo
+{% endblock %}
+
+{% block body %}
+    <h2>Kategorie</h2>
+    {% for category in categories %}
+        <ul>
+            <li>{{ category.name }}</li>
+            <li><a href="{{ url('categoryView', {'categoryId' : category.id}) }}">Frameworkowy URL</a></li>
+            <li><a href="{{ url('categoryUrl', {'categoryId' : category.id }) }}"> Friendly URL</a></li>
+        </ul>
+    {% endfor %}
+{% endblock %}
