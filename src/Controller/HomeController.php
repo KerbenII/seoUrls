@@ -11,17 +11,6 @@ class HomeController extends AbstractController
 {
     public function indexAction()
     {
-        $entityManager = $this->getDoctrine()->getManager();
-
-        $mappingToChange = new UrlMapping();
-        $mappingToChange->setPath('/musztardowa-kurteczka');
-        $mappingToChange->setMethod('viewAction');
-        $mappingToChange->setController(ProductController::class);
-        $mappingToChange->setIdentifier(6);
-        $result = $entityManager->getRepository('App:UrlMapping')
-            ->createOrUpdateAndRedirect($mappingToChange);
-        dump($result);
-        die;
         $categories = $this->getDoctrine()
             ->getRepository('App:Category')
             ->findAll();
