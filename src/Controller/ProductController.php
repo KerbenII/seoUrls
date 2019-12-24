@@ -10,14 +10,14 @@ use Symfony\Component\HttpFoundation\Response;
 class ProductController extends AbstractController
 {
     /**
-     * @param $productId
+     * @param $id int product identifier
      * @return Response
      */
-    public function viewAction($productId): Response
+    public function viewAction($id): Response
     {
         $product = $this->getDoctrine()
             ->getRepository('App:Product')
-            ->findOneById($productId);
+            ->findOneById($id);
 
         return  $this->render('product.html.twig', [
             'product' => $product,

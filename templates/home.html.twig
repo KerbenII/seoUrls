@@ -8,8 +8,8 @@
     {% for category in categories %}
         <ul>
             <li>{{ category.name }}</li>
-            <li><a href="{{ url('categoryView', {'categoryId' : category.id}) }}">Frameworkowy URL</a></li>
-            <li><a href="{{ url('categoryUrl', {'categoryId' : category.id }) }}"> Friendly URL</a></li>
+            <li><a href="{{ url('categoryView', {'id' : category.id}) }}">Frameworkowy URL</a></li>
+            <li><a href="{{ url('categoryUrl', {'id' : category.id }) }}"> Friendly URL</a></li>
         </ul>
     {% endfor %}
 {% endblock %}

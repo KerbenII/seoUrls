@@ -36,7 +36,6 @@ class CategoryRepository extends ServiceEntityRepository
             ->andWhere('c.name = :val')
             ->setParameter('val', $value)
             ->getQuery()
-            ->getOneOrNullResult()
-        ;
+            ->getOneOrNullResult();
     }
 }

@@ -43,18 +43,12 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
     private function createRouteUsingUrlMapping(UrlMapping $urlMapping): Route
     {
         $routeArray = [
-            '_controller' => [$urlMapping->getController(),
-                $urlMapping->getMethod(),],
+            '_controller' => [
+                $urlMapping->getController(),
+                $urlMapping->getMethod()
+            ],
+            'id' => $urlMapping->getIdentifier()
         ];
-
-        switch ($urlMapping->getController()) {
-            case ProductController::class:
-                $routeArray['productId'] = $urlMapping->getIdentifier();
-                break;
-            case CategoryController::class:
-                $routeArray['categoryId'] = $urlMapping->getIdentifier();
-
-        }
 
         return new Route(
             $urlMapping->getPath(),

@@ -2,8 +2,8 @@ index:
   path: /
   controller: App\Controller\HomeController::indexAction
 productView:
-  path: /product/view/{productId}
+  path: /product/view/{id}
   controller: App\Controller\ProductController::viewAction
 categoryView:
-  path: /category/view/{categoryId}
+  path: /category/view/{id}
   controller: App\Controller\CategoryController::viewAction

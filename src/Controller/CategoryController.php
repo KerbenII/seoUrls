@@ -10,15 +10,15 @@ use Symfony\Component\HttpFoundation\Response;
 class CategoryController extends AbstractController
 {
     /**
-     * @param $categoryId
+     * @param $id int category identifier
      * @return Response
      */
-    public function viewAction($categoryId): Response
+    public function viewAction($id): Response
     {
         /** @var Category $category */
         $category = $this->getDoctrine()
             ->getRepository('App:Category')
-            ->findOneById($categoryId);
+            ->findOneById($id);
 
         return  $this->render('category.html.twig', [
             'category' => $category,

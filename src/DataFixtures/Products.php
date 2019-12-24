@@ -9,12 +9,13 @@ use App\Entity\Product;
 use App\Repository\CategoryRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\NonUniqueResultException;
 
 class Products extends Fixture
 {
     /**
      * @param ObjectManager $manager
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
     public function load(ObjectManager $manager)
     {
