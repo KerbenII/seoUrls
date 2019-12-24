@@ -9,6 +9,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\DBAL\LockMode;
 use Doctrine\ORM\NonUniqueResultException;
+use Symfony\Cmf\Component\Routing\RouteProviderInterface;
 use Throwable;
 
 /**
@@ -26,17 +27,21 @@ class UrlMappingRepository extends ServiceEntityRepository
 
     /**
      * @param $path
-     *
-     * @return UrlMapping|null
-     * @throws NonUniqueResultException
+     * @return array
      */
-    public function findUrlMappingByPath($path): ?UrlMapping
+    public function findUrlMappingsByPath($path): array
     {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.path = :val')
-            ->setParameter('val', $path)
-            ->getQuery()
-            ->getOneOrNullResult();
+        $dql = $this->createQueryBuilder('u');
+
+        /**
+         * @see RouteProviderInterface::getRoutesByNames
+        **/
+        if (null !== $path) {
+            $dql->andWhere('u.path = :val')
+                ->setParameter('val', $path);
+        }
+        return $dql->getQuery()
+            ->getResult();
     }
 
     /**

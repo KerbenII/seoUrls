@@ -24,13 +24,13 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
         $routeCollection = new RouteCollection();
         $requestPath = $request->getPathInfo();
 
-        $urlMapping = $this->getRouteRepository()->findUrlMappingByPath($requestPath);
+        $urlMapping = $this->getRouteRepository()->findUrlMappingsByPath($requestPath);
 
         if (null === $urlMapping) {
             return $routeCollection;
         }
 
-        $route = $this->createRouteUsingUrlMapping($urlMapping);
+        $route = $this->createRouteUsingUrlMapping($urlMapping[0]);
         $routeCollection->add($requestPath, $route);
 
         return $routeCollection;
@@ -44,7 +44,7 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
     {
         $routeArray = [
             '_controller' => [$urlMapping->getController(),
-                $urlMapping->getMethod(), ],
+                $urlMapping->getMethod(),],
         ];
 
         switch ($urlMapping->getController()) {
@@ -69,26 +69,25 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
      */
     public function getRouteByName($name): Route
     {
-        $urlMapping = $this->getRouteRepository()->findUrlMappingByPath($name);
+        $urlMapping = $this->getRouteRepository()->findUrlMappingsByPath($name);
         if (null === $urlMapping) {
             throw new RouteNotFoundException("Route not found for $name");
         }
 
-        return $this->createRouteUsingUrlMapping($urlMapping);
+        return $this->createRouteUsingUrlMapping($urlMapping[0]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getRoutesByNames($names): array
+    public function getRoutesByNames($names): ?array
     {
-        try {
-            $route = $this->getRouteByName($names[0]);
-        } catch (RouteNotFoundException $e) {
-            return [];
+        $routes = [];
+        $urlMappings = $this->getRouteRepository()->findUrlMappingsByPath($names);
+        foreach ($urlMappings as $urlMapping) {
+            $routes[] = $this->createRouteUsingUrlMapping($urlMapping);
         }
-
-        return [$route];
+        return $routes;
     }
 
     /**
