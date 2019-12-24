@@ -12,6 +12,13 @@ use Doctrine\Common\Persistence\ObjectManager;
 class UrlMappings extends Fixture
 {
 
+    const PATH = 'path';
+    const CONTROLLER ='controller';
+    const METHOD = 'viwAction';
+    const IDENTIFIER = 'identifier';
+    const PRODUCT_CLASS = ProductController::class;
+    const CATEGORY_CLASS = CategoryController::class;
+    const VIEW_ACTION ='viewAction';
     /**
      * @param ObjectManager $manager
      */
@@ -19,52 +26,44 @@ class UrlMappings extends Fixture
     {
         $urlMappingsFixtures = [
             [
-                'path' => '/czarna-ramoneska-winter-fear',
-                'controller' => ProductController::class,
-                'method' => 'viewAction',
-                'identifier' => 1,
+                self::PATH => '/czarna-ramoneska-winter-fear',
+                self::CONTROLLER => self::PRODUCT_CLASS,
+                self::IDENTIFIER => 1,
             ],
             [
-                'path' => '/czarne-sniegowce-kenthurst',
-                'controller' => ProductController::class,
-                'method' => 'viewAction',
-                'identifier' => 2,
+                self::PATH => '/czarne-sniegowce-kenthurst',
+                self::CONTROLLER => self::PRODUCT_CLASS,
+                self::IDENTIFIER => 2,
             ],
             [
-                'path' => '/biale-sniegowce-kenthurst',
-                'controller' => ProductController::class,
-                'method' => 'viewAction',
-                'identifier' => 3,
+                self::PATH => '/biale-sniegowce-kenthurst',
+                self::CONTROLLER => self::PRODUCT_CLASS,
+                self::IDENTIFIER => 3,
             ],
             [
-                'path' => '/biala-kurtka-gravatai',
-                'controller' => ProductController::class,
-                'method' => 'viewAction',
-                'identifier' => 4,
+                self::PATH => '/biala-kurtka-gravatai',
+                self:: CONTROLLER => self::PRODUCT_CLASS,
+                self::IDENTIFIER => 4,
             ],
             [
-                'path' => '/zielona-kurtka-gravatai',
-                'controller' => ProductController::class,
-                'method' => 'viewAction',
-                'identifier' => 5,
+                self::PATH => '/zielona-kurtka-gravatai',
+                self::CONTROLLER => self::PRODUCT_CLASS,
+                self::IDENTIFIER => 5,
             ],
             [
-                'path' => '/musztardowa-kurtka-gravatai',
-                'controller' => ProductController::class,
-                'method' => 'viewAction',
-                'identifier' => 6,
+                self::PATH => '/musztardowa-kurtka-gravatai',
+                self::CONTROLLER => self::PRODUCT_CLASS,
+                self::IDENTIFIER => 6,
             ],
             [
-                'path' => '/buty',
-                'controller' => CategoryController::class,
-                'method' => 'viewAction',
-                'identifier' => 1,
+                self::PATH => '/buty',
+                self::CONTROLLER => self::CATEGORY_CLASS,
+                self::IDENTIFIER => 1,
             ],
             [
-                'path' => '/kurtka',
-                'controller' => CategoryController::class,
-                'method' => 'viewAction',
-                'identifier' => 2,
+                self::PATH => '/kurtka',
+                self::CONTROLLER => self::CATEGORY_CLASS,
+                self::IDENTIFIER => 2,
             ],
         ];
 
@@ -72,7 +71,7 @@ class UrlMappings extends Fixture
             $urlMapping = new UrlMapping();
             $urlMapping->setPath($urlMappingFixture['path']);
             $urlMapping->setController($urlMappingFixture['controller']);
-            $urlMapping->setMethod($urlMappingFixture['method']);
+            $urlMapping->setMethod(self::VIEW_ACTION);
             $urlMapping->setIdentifier($urlMappingFixture['identifier']);
             $manager->persist($urlMapping);
         }
