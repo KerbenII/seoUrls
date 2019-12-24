@@ -1,17 +1,15 @@
 <?php
-
 declare(strict_types=1);
 
 namespace App\Repository;
 
-use App\Controller\CategoryController;
-use App\Controller\ProductController;
 use App\Entity\Redirection;
 use App\Entity\UrlMapping;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\DBAL\LockMode;
 use Doctrine\ORM\NonUniqueResultException;
+use Throwable;
 
 /**
  * @method UrlMapping|null find($id, $lockMode = null, $lockVersion = null)
@@ -21,9 +19,6 @@ use Doctrine\ORM\NonUniqueResultException;
  */
 class UrlMappingRepository extends ServiceEntityRepository
 {
-    const TYPE_PRODUCT = ProductController::class;
-    const TYPE_CATEGORY = CategoryController::class;
-
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, UrlMapping::class);
@@ -32,6 +27,7 @@ class UrlMappingRepository extends ServiceEntityRepository
     /**
      * @param $path
      *
+     * @return UrlMapping|null
      * @throws NonUniqueResultException
      */
     public function findUrlMappingByPath($path): ?UrlMapping
@@ -43,6 +39,13 @@ class UrlMappingRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
     }
 
+    /**
+     * @param string $controller
+     * @param string $method
+     * @param int $id
+     * @return mixed
+     * @throws NonUniqueResultException
+     */
     public function findPathForMapping(string $controller, string $method, int $id)
     {
         return $this->createQueryBuilder('u')
@@ -58,7 +61,7 @@ class UrlMappingRepository extends ServiceEntityRepository
 
     /**
      * @param $newUrlMapping
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function createOrUpdateAndRedirect($newUrlMapping): void
     {
@@ -66,7 +69,8 @@ class UrlMappingRepository extends ServiceEntityRepository
 
         /* @var UrlMapping $newUrlMapping */
         $em->transactional(function () use ($newUrlMapping, $em) {
-            // Use pessimistic write lock when selecting.
+            // Use pessimistic write lock when selecting, it will revert once errored.
+            /** @var UrlMapping $mapping */
             $mapping = $this->createQueryBuilder('u')
                 ->andWhere('u.controller = :controller')
                 ->setParameter('controller', $newUrlMapping->getController())
@@ -79,11 +83,12 @@ class UrlMappingRepository extends ServiceEntityRepository
                 ->getResult();
 
             if ($mapping) {
-                if ($newUrlMapping->getPath() === $mapping[0]->getPath()) {
+                $mapping = $mapping[0];
+                if ($newUrlMapping->getPath() === $mapping->getPath()) {
                     return;
                 }
                 $redirection = new Redirection();
-                $redirection->setFromPath($mapping[0]->getPath());
+                $redirection->setFromPath($mapping->getPath());
                 $redirection->setToPath($newUrlMapping->getPath());
                 $redirection->setStatusCode(301);
 

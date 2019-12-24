@@ -9,6 +9,9 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 class Categories extends Fixture
 {
+    /**
+     * @param ObjectManager $manager
+     */
     public function load(ObjectManager $manager)
     {
         $categoriesData = [

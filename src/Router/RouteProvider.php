@@ -1,11 +1,12 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Router;
 
 use App\Controller\CategoryController;
 use App\Controller\ProductController;
 use App\Entity\UrlMapping;
-use Doctrine\Persistence\ObjectRepository;
+use App\Repository\UrlMappingRepository;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\DoctrineProvider;
 use Symfony\Cmf\Component\Routing\RouteProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,7 +36,11 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
         return $routeCollection;
     }
 
-    private function createRouteUsingUrlMapping(UrlMapping $urlMapping)
+    /**
+     * @param UrlMapping $urlMapping
+     * @return Route
+     */
+    private function createRouteUsingUrlMapping(UrlMapping $urlMapping): Route
     {
         $routeArray = [
             '_controller' => [$urlMapping->getController(),
@@ -83,7 +88,10 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
         return [$route];
     }
 
-    protected function getRouteRepository(): ObjectRepository
+    /**
+     * @return UrlMappingRepository
+     */
+    private function getRouteRepository()
     {
         return $this->getObjectManager()->getRepository('App:UrlMapping');
     }

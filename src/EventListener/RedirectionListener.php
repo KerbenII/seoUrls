@@ -1,12 +1,12 @@
 <?php
-
 declare(strict_types=1);
 
 namespace App\EventListener;
 
 use App\Entity\Redirection;
 use App\Repository\RedirectionRepository;
-use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Exception;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
@@ -18,19 +18,25 @@ class RedirectionListener
 
     /**
      * RedirectionListener constructor.
+     * @param ManagerRegistry $registry
      */
     public function __construct(ManagerRegistry $registry)
     {
         $this->registry = $registry;
     }
 
+    /**
+     * Determine and it should redirect request to right controller
+     * @param RequestEvent $event
+     * @return Response|null
+     */
     public function onKernelRequest(RequestEvent $event): ?Response
     {
         $route = $event->getRequest()->attributes->get('_route');
         if (null !== $route) {
             return null;
         }
-        /** @var \Exception $exception */
+        /** @var Exception $exception */
         $exception = $event->getRequest()->attributes->get('exception');
         if (null === $exception || !$exception instanceof NotFoundHttpException) {
             return null;
@@ -46,6 +52,10 @@ class RedirectionListener
             return null;
         }
 
-        return $event->setResponse(new RedirectResponse($redirection->getToPath(), $redirection->getStatusCode()));
+        return $event->setResponse(
+            new RedirectResponse(
+                $redirection->getToPath(),
+                $redirection->getStatusCode()
+            ));
     }
 }

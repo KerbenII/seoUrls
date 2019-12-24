@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace App\DataFixtures;
@@ -12,57 +11,58 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 class UrlMappings extends Fixture
 {
-    const PRODUCT_CONTROLLER = ProductController::class;
-    const CATEGORY_CONTROLLER = CategoryController::class;
 
+    /**
+     * @param ObjectManager $manager
+     */
     public function load(ObjectManager $manager)
     {
         $urlMappingsFixtures = [
             [
                 'path' => '/czarna-ramoneska-winter-fear',
-                'controller' => self::PRODUCT_CONTROLLER,
+                'controller' => ProductController::class,
                 'method' => 'viewAction',
                 'identifier' => 1,
             ],
             [
                 'path' => '/czarne-sniegowce-kenthurst',
-                'controller' => self::PRODUCT_CONTROLLER,
+                'controller' => ProductController::class,
                 'method' => 'viewAction',
                 'identifier' => 2,
             ],
             [
                 'path' => '/biale-sniegowce-kenthurst',
-                'controller' => self::PRODUCT_CONTROLLER,
+                'controller' => ProductController::class,
                 'method' => 'viewAction',
                 'identifier' => 3,
             ],
             [
                 'path' => '/biala-kurtka-gravatai',
-                'controller' => self::PRODUCT_CONTROLLER,
+                'controller' => ProductController::class,
                 'method' => 'viewAction',
                 'identifier' => 4,
             ],
             [
                 'path' => '/zielona-kurtka-gravatai',
-                'controller' => self::PRODUCT_CONTROLLER,
+                'controller' => ProductController::class,
                 'method' => 'viewAction',
                 'identifier' => 5,
             ],
             [
                 'path' => '/musztardowa-kurtka-gravatai',
-                'controller' => self::PRODUCT_CONTROLLER,
+                'controller' => ProductController::class,
                 'method' => 'viewAction',
                 'identifier' => 6,
             ],
             [
                 'path' => '/buty',
-                'controller' => self::CATEGORY_CONTROLLER,
+                'controller' => CategoryController::class,
                 'method' => 'viewAction',
                 'identifier' => 1,
             ],
             [
                 'path' => '/kurtka',
-                'controller' => self::CATEGORY_CONTROLLER,
+                'controller' => CategoryController::class,
                 'method' => 'viewAction',
                 'identifier' => 2,
             ],

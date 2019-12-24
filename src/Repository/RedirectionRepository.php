@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace App\Repository;
@@ -17,6 +16,10 @@ use Doctrine\ORM\NonUniqueResultException;
  */
 class RedirectionRepository extends ServiceEntityRepository
 {
+    /**
+     * RedirectionRepository constructor.
+     * @param ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Redirection::class);

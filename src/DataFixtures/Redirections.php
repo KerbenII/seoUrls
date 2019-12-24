@@ -9,9 +9,11 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 class Redirections extends Fixture
 {
-    /** TODO: Zmienic na 301 przed oddaniem zadania */
-    private $statusCode = 302;
+    private $statusCode = 301;
 
+    /**
+     * @param ObjectManager $manager
+     */
     public function load(ObjectManager $manager)
     {
         $redirectionsData = [

@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace App\Router;
@@ -17,7 +16,6 @@ class SeoUrlGenerator implements UrlGeneratorInterface
 {
     protected $context;
     private $manager;
-    private $urlGenerator;
     private $router;
 
     public function __construct(ChainRouterInterface $router, ManagerRegistry $managerRegistry)
@@ -45,7 +43,7 @@ class SeoUrlGenerator implements UrlGeneratorInterface
     /**
      * {@inheritdoc}
      */
-    public function generate($name, $parameters = [], $referenceType = self::ABSOLUTE_PATH)
+    public function generate($name, $parameters = [], $referenceType = self::ABSOLUTE_PATH) :string
     {
         $getRepository = $this->manager->getRepository('App:UrlMapping');
         $urlMapping = null;
@@ -59,7 +57,7 @@ class SeoUrlGenerator implements UrlGeneratorInterface
                 );
                 break;
             case 'categoryId':
-                /** @var UrlMapping */
+                /** @var UrlMapping $urlMapping */
                 $urlMapping = $getRepository->findPathForMapping(
                     CategoryController::class,
                     'viewAction',

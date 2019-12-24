@@ -10,8 +10,6 @@ use Doctrine\ORM\Mapping\UniqueConstraint;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UrlMappingRepository")
  * @Table(name="url_mapping",uniqueConstraints={@UniqueConstraint(name="unique_path", columns={"path"})})
-
- * TODO: unique $path
  */
 class UrlMapping
 {
@@ -42,16 +40,26 @@ class UrlMapping
      */
     private $identifier;
 
-    public function getId(): ?int
+    /**
+     * @return int
+     */
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getPath(): ?string
+    /**
+     * @return string
+     */
+    public function getPath(): string
     {
         return $this->decodePath($this->path);
     }
 
+    /**
+     * @param string $path
+     * @return $this
+     */
     public function setPath(string $path): self
     {
         $this->path = $this->encodePath($path);
@@ -59,11 +67,18 @@ class UrlMapping
         return $this;
     }
 
-    public function getController(): ?string
+    /**
+     * @return string
+     */
+    public function getController(): string
     {
         return $this->controller;
     }
 
+    /**
+     * @param string $controller
+     * @return $this
+     */
     public function setController(string $controller): self
     {
         $this->controller = $controller;
@@ -71,11 +86,18 @@ class UrlMapping
         return $this;
     }
 
-    public function getMethod(): ?string
+    /**
+     * @return string
+     */
+    public function getMethod(): string
     {
         return $this->method;
     }
 
+    /**
+     * @param string $method
+     * @return $this
+     */
     public function setMethod(string $method): self
     {
         $this->method = $method;
@@ -83,11 +105,18 @@ class UrlMapping
         return $this;
     }
 
+    /**
+     * @return int|null
+     */
     public function getIdentifier(): ?int
     {
         return $this->identifier;
     }
 
+    /**
+     * @param int|null $identifier
+     * @return $this
+     */
     public function setIdentifier(?int $identifier): self
     {
         $this->identifier = $identifier;
@@ -95,6 +124,10 @@ class UrlMapping
         return $this;
     }
 
+    /**
+     * @param string $path
+     * @return string
+     */
     private function encodePath(string $path): string
     {
         $path = ltrim($path, '/');
@@ -102,6 +135,10 @@ class UrlMapping
         return '/'.urlencode($path);
     }
 
+    /**
+     * @param string $path
+     * @return string
+     */
     private function decodePath(string $path): string
     {
         $path = ltrim($path, '/');

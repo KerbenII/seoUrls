@@ -12,13 +12,17 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 class Products extends Fixture
 {
+    /**
+     * @param ObjectManager $manager
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
     public function load(ObjectManager $manager)
     {
         /** @var CategoryRepository $categories */
         $categories = $manager->getRepository('App:Category');
 
-        $jackets = $categories->findByName(Category::JACKETS);
-        $shoes = $categories->findByName(Category::SHOES);
+        $jackets = $categories->findOneByName(Category::JACKETS);
+        $shoes = $categories->findOneByName(Category::SHOES);
         $productsData = [
             'Czarna Ramoneska Winter Fear' => [109.99, $jackets],
             'Czarne Śniegowce Kenthurst' => [109.99, $shoes],
