@@ -55,9 +55,12 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
                 $routeArray['categoryId'] = $urlMapping->getIdentifier();
 
         }
+
         return new Route(
             $urlMapping->getPath(),
-            $routeArray
+            $routeArray,
+            [],
+            ['utf8' => true]
         );
     }
 

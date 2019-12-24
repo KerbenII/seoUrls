@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Utils\URLHelper;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\UniqueConstraint;
@@ -53,7 +54,7 @@ class UrlMapping
      */
     public function getPath(): string
     {
-        return $this->decodePath($this->path);
+        return URLHelper::decodeURL($this->path);
     }
 
     /**
@@ -62,7 +63,7 @@ class UrlMapping
      */
     public function setPath(string $path): self
     {
-        $this->path = $this->encodePath($path);
+        $this->path = URLHelper::encodeURL($path);
 
         return $this;
     }
@@ -122,27 +123,5 @@ class UrlMapping
         $this->identifier = $identifier;
 
         return $this;
-    }
-
-    /**
-     * @param string $path
-     * @return string
-     */
-    private function encodePath(string $path): string
-    {
-        $path = ltrim($path, '/');
-
-        return '/'.urlencode($path);
-    }
-
-    /**
-     * @param string $path
-     * @return string
-     */
-    private function decodePath(string $path): string
-    {
-        $path = ltrim($path, '/');
-
-        return '/'.urldecode($path);
     }
 }

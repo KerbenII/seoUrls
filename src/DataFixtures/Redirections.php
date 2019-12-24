@@ -41,9 +41,11 @@ class Redirections extends Fixture
                 '/zielona-kurtka-grawatai',
                 '/zielona-kurtka',
             ],
-            'Musztardowa Kurtka Gravatai' => [
+            'musztardowa-kurtka-gravatai' => [
                 '/musztardowa-kurtka-grawatai',
                 '/musztardowa-kurtka',
+                '/musztardowa+kurtka+gravatai',
+                '/musztardowa-kurtka-grawataí',
             ],
         ];
 

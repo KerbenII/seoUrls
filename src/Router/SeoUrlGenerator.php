@@ -7,6 +7,7 @@ use App\Controller\CategoryController;
 use App\Controller\ProductController;
 use App\Entity\UrlMapping;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use RuntimeException;
 use Symfony\Cmf\Component\Routing\ChainRouterInterface;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -18,6 +19,11 @@ class SeoUrlGenerator implements UrlGeneratorInterface
     private $manager;
     private $router;
 
+    /**
+     * SeoUrlGenerator constructor.
+     * @param ChainRouterInterface $router
+     * @param ManagerRegistry $managerRegistry
+     */
     public function __construct(ChainRouterInterface $router, ManagerRegistry $managerRegistry)
     {
         $this->manager = $managerRegistry;
@@ -46,25 +52,30 @@ class SeoUrlGenerator implements UrlGeneratorInterface
     public function generate($name, $parameters = [], $referenceType = self::ABSOLUTE_PATH) :string
     {
         $getRepository = $this->manager->getRepository('App:UrlMapping');
-        $urlMapping = null;
-        switch (key($parameters)) {
-            case 'productId':
-                /** @var UrlMapping */
-                $urlMapping = $getRepository->findPathForMapping(
-                    ProductController::class,
-                    'viewAction',
-                    (int) $parameters['productId']
-                );
+
+        switch ($name) {
+            case 'productUrl':
+                $controller = ProductController::class;
+                $parameterName = 'productId';
                 break;
-            case 'categoryId':
-                /** @var UrlMapping $urlMapping */
-                $urlMapping = $getRepository->findPathForMapping(
-                    CategoryController::class,
-                    'viewAction',
-                    (int) $parameters['categoryId']
-                );
+            case 'categoryUrl':
+                $controller = CategoryController::class;
+                $parameterName = 'categoryId';
                 break;
+            default:
+                throw new RouteNotFoundException('SeoUrlGenerator can not generate that type of URL');
         }
+
+        if ( !isset($parameters[$parameterName]) || !is_int($parameters[$parameterName])) {
+            throw new RuntimeException("$parameterName does not exist or  is not an integer");
+        }
+
+        /** @var UrlMapping $urlMapping */
+        $urlMapping = $getRepository->findPathForMapping(
+            $controller,
+            'viewAction',
+            $parameters[$parameterName]
+        );
 
         $context = $this->router->getContext();
 
@@ -74,9 +85,9 @@ class SeoUrlGenerator implements UrlGeneratorInterface
         $url = '';
 
         if (self::ABSOLUTE_PATH === $referenceType) {
-            $url = $context->getScheme().'://'.$context->getHost();
+            $url = sprintf('%s://%s', $context->getScheme(), $context->getHost());
         }
 
-        return $url.$urlMapping->getPath();
+        return $url . $urlMapping->getPath();
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Utils\URLHelper;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Table as Table;
 use Doctrine\ORM\Mapping\UniqueConstraint as UniqueConstraint;
@@ -49,7 +50,7 @@ class Redirection
      */
     public function getFromPath(): string
     {
-        return $this->fromPath;
+        return URLHelper::decodeURL($this->fromPath);
     }
 
     /**
@@ -58,7 +59,7 @@ class Redirection
      */
     public function setFromPath(string $fromPath): self
     {
-        $this->fromPath = $this->normalizePath($fromPath);
+        $this->fromPath = URLHelper::encodeURL($fromPath);
 
         return $this;
     }
@@ -68,7 +69,7 @@ class Redirection
      */
     public function getToPath(): string
     {
-        return $this->toPath;
+        return URLHelper::decodeURL($this->toPath);
     }
 
     /**
@@ -77,7 +78,7 @@ class Redirection
      */
     public function setToPath(string $toPath): self
     {
-        $this->toPath = $this->normalizePath($toPath);
+        $this->toPath = URLHelper::encodeURL($toPath);
 
         return $this;
     }
@@ -99,17 +100,5 @@ class Redirection
         $this->statusCode = $statusCode;
 
         return $this;
-    }
-
-    /**
-     * Do not urlencode trailing slash
-     * @param string $path
-     * @return string
-     */
-    private function normalizePath(string $path): string
-    {
-        $path = ltrim($path, '/');
-
-        return '/'.urlencode($path);
     }
 }
